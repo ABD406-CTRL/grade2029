@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>تفاصيل الطالب</title>
+    <style>
+        body {
+            background-color: #0b3d66;
+            color: white;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            justify-content: center;
+        }
+        .student-card {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 30px;
+            border-radius: 15px;
+            border: 1px solid #3498db;
+            width: 100%;
+            max-width: 600px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+        }
+        h2 {
+            text-align: center;
+            border-bottom: 2px solid #3498db;
+            padding-bottom: 15px;
+            color: #add8e6;
+        }
+        .info-row {
+            display: flex;
+            justify-content: space-between;
+            padding: 12px 0;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+        }
+        .label {
+            font-weight: bold;
+            color: #85c1e9;
+        }
+        .value {
+            font-size: 1.1em;
+        }
+        .back-btn {
+            display: block;
+            width: 100%;
+            text-align: center;
+            margin-top: 25px;
+            padding: 12px;
+            background-color: #3498db;
+            color: white;
+            text-decoration: none;
+            border-radius: 8px;
+            font-weight: bold;
+            transition: 0.3s;
+        }
+        .back-btn:hover {
+            background-color: #2980b9;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="student-card">
+        <h2>تفاصيل الطالب الأكاديمية</h2>
+        
+        <div class="info-row">
+            <span class="label">الرقم الجامعي:</span>
+            <span class="value">{{ s[0] }}</span>
+        </div>
+        
+        <div class="info-row">
+            <span class="label">الاسم الكامل:</span>
+            <span class="value">{{ s[5] }}</span>
+        </div>
+        
+        <div class="info-row">
+            <span class="label">اسم الأم:</span>
+            <span class="value">{{ s[6] }}</span>
+        </div>
+
+        <div class="info-row">
+            <span class="label">المعدل الحالي:</span>
+            <span class="value" style="color: #2ecc71; font-weight: bold;">{{ s[138] }}</span>
+        </div>
+
+        <div class="info-row">
+            <span class="label">معدل السنة الثانية:</span>
+            <span class="value">{{ s[139] }}</span>
+        </div>
+
+        <div class="info-row">
+            <span class="label">معدل الفرز:</span>
+            <span class="value">{{ s[134] }}</span>
+        </div>
+
+        <a href="/" class="back-btn">العودة للوحة النتائج</a>
+    </div>
+
+</body>
+</html>

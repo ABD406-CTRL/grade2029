@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>نتائج أوائل الدفعة - 2029</title>
+    <style>
+        /* التنسيق الجمالي والألوان المستوحاة من الصورة */
+        body {
+            background-color: #0b3d66; /* لون كحلي عميق */
+            color: white;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 20px;
+        }
+        .header-container {
+            text-align: center;
+            padding: 20px;
+            border-bottom: 2px solid #3498db;
+            margin-bottom: 30px;
+        }
+        .control-panel {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 20px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+            justify-content: center;
+            align-items: center;
+        }
+        select, input, button {
+            padding: 10px;
+            border-radius: 5px;
+            border: none;
+            font-size: 16px;
+        }
+        button {
+            background-color: #3498db;
+            color: white;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+        button:hover {
+            background-color: #2980b9;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+            background: rgba(0, 0, 0, 0.2);
+            border-radius: 8px;
+            overflow: hidden;
+        }
+        th {
+            background-color: #1a5276;
+            color: #add8e6;
+            padding: 15px;
+            text-align: center;
+            border-bottom: 2px solid #3498db;
+        }
+        td {
+            padding: 12px;
+            text-align: center;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        tr:hover {
+            background-color: rgba(255, 255, 255, 0.05);
+        }
+        .rank-badge {
+            background: #f1c40f;
+            color: #0b3d66;
+            padding: 2px 8px;
+            border-radius: 4px;
+            font-weight: bold;
+        }
+        .details-link {
+            background: white;
+            color: #0b3d66;
+            text-decoration: none;
+            width: 30px;
+            height: 30px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="header-container">
+        <h1>نتائج أسماء الأوائل - دفعة 2029</h1>
+    </div>
+
+    <div class="control-panel">
+        <form action="/search" method="post" style="display: flex; gap: 10px;">
+            <input type="text" name="student_id" placeholder="ابحث بالاسم أو الرقم..." required>
+            <button type="submit">بحث</button>
+        </form>
+
+        <form action="/sort" method="post" style="display: flex; gap: 10px;">
+            <select name="column_index">
+                <option value="1">المعدل العام</option>
+                <option value="2">مجموع الفصل الأول</option>
+                <option value="3">مجموع الفصل الثاني</option>
+                </select>
+            <button type="submit" style="background-color: #27ae60;">فرز وترتيب</button>
+        </form>
+    </div>
+
+    {% if results %}
+    <table>
+        <thead>
+            <tr>
+                <th>الترتيب</th>
+                <th>رقم الاكتتاب</th>
+                <th>الاسم الثلاثي</th>
+                <th>اسم الأم</th>
+                <th>الدرجة</th>
+                <th>التفاصيل</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for row in results %}
+            <tr>
+                <td><span class="rank-badge">{{ loop.index }}</span></td>
+<td>{{ row[0] }}</td> <td>{{ row[5] }}</td> <td>{{ row[6] }}</td> <td style="color: #2ecc71; font-weight: bold;">{{ row[sorted_col] }}</td>
+                <td><a href="/student/{{ row[0] }}" class="details-link">←</a></td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    {% else %}
+    <div style="text-align: center; margin-top: 50px; opacity: 0.5;">
+        <p>الرجاء اختيار معيار الفرز لعرض النتائج...</p>
+    </div>
+    {% endif %}
+
+</body>
+</html>
