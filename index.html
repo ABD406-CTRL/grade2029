@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <title>نظام البحث عن الطلاب</title>
+    <style>
+        body { font-family: Arial; text-align: center; padding-top: 50px; background: #f4f7f6; }
+        input { padding: 10px; width: 250px; border-radius: 5px; border: 1px solid #ddd; }
+        button { padding: 10px 20px; background: #3498db; color: white; border: none; border-radius: 5px; cursor: pointer; }
+        table { width: 90%; margin: 30px auto; border-collapse: collapse; background: white; }
+        th, td { padding: 12px; border: 1px solid #ddd; text-align: center; }
+        th { background: #3498db; color: white; }
+    </style>
+</head>
+<body>
+    <h1>🎓نظام إدارة درجات الطلاب</h1>
+    
+    <form action="/search" method="post">
+        <input type="text" name="student_id" placeholder="أدخل الرقم الجامعي أو الامتحاني..." required>
+        <button type="submit">بحث</button>
+    </form>
+
+    <hr style="margin: 30px 0;">
+
+    <div style="margin-top: 20px;">
+        <h3>🏆 فرز وترتيب الطلاب حسب المادة أو المعدل</h3>
+        <form action="/sort" method="post">
+            <select name="column_index" style="padding: 10px; border-radius: 5px;">
+                <option value="138">المعدل الحالي</option>
+                <option value="139">معدل السنة الثانية</option>
+                <option value="134">معدل الفرز</option>
+                </select>
+            <button type="submit" style="background: #27ae60;">فرز الآن</button>
+        </form>
+    </div>
+
+    {% if results %}
+    <table>
+        <thead>
+            <tr>
+                <th>الترتيب</th>
+                <th>الرقم الجامعي</th>
+                <th>الاسم الكامل</th>
+                <th>الدرجة</th>
+                <th>التفاصيل</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for row in results %}
+            <tr>
+                <td><b>{{ loop.index }}</b></td>
+                <td>{{ row[0] }}</td>
+                <td>{{ row[5] }}</td>
+                <td style="color: #27ae60; font-weight: bold;">{{ row[sorted_col] }}</td>
+                <td><a href="/student/{{ row[0] }}">👁️ عرض</a></td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    {% endif %}
+    </body>
+</html>

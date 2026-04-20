@@ -1,0 +1,329 @@
+<!DOCTYPE html>
+<html dir="rtl">
+<head>
+    <title>الملف الأكاديمي الشامل</title>
+    <style>
+        :root { --primary: #2c3e50; --secondary: #34495e; --accent: #3498db; --danger: #e74c3c; --success: #27ae60; --warning: #f39c12; }
+        body { font-family: 'Segoe UI', Tahoma, sans-serif; background: #f0f4f8; margin: 0; padding: 20px; color: #333; }
+        .container { max-width: 1200px; margin: auto; background: white; padding: 25px; border-radius: 15px; box-shadow: 0 5px 25px rgba(0,0,0,0.1); }
+        
+        /* البطاقة التعريفية */
+        .header-card { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 15px; background: #fff; padding: 20px; border-radius: 12px; border: 1px solid #e0e6ed; border-top: 5px solid var(--accent); margin-bottom: 20px; }
+        .header-item b { color: var(--secondary); display: block; font-size: 0.8em; margin-bottom: 3px; }
+        .header-item span { font-size: 1em; font-weight: bold; color: var(--primary); }
+
+        /* شريط المعدلات العلوي */
+        .top-rates { display: flex; gap: 10px; margin-bottom: 20px; flex-wrap: wrap; }
+        .rate-badge { background: var(--secondary); color: white; padding: 8px 15px; border-radius: 20px; font-size: 0.85em; }
+        .rate-badge b { color: #f1c40f; }
+
+        /* التبويبات */
+        .tabs { display: flex; border-bottom: 2px solid #eee; margin-bottom: 20px; gap: 2px; }
+        .tab-btn { padding: 12px 25px; cursor: pointer; border: none; background: #e0e6ed; border-radius: 8px 8px 0 0; font-weight: bold; color: #7f8c8d; }
+        .tab-btn.active { background: var(--accent); color: white; }
+        .tab-content { display: none; animation: fadeIn 0.3s; }
+        .tab-content.active { display: block; }
+
+        /* الجداول */
+        .section-box { margin-bottom: 30px; border: 1px solid #eee; border-radius: 10px; overflow: hidden; }
+        .section-header { background: #f8f9fa; padding: 10px 15px; font-weight: bold; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #eee; }
+        table { width: 100%; border-collapse: collapse; background: white; }
+        th { background: #f1f4f6; color: var(--secondary); padding: 12px; font-size: 0.85em; text-align: center; border-bottom: 2px solid #dee2e6; }
+        td { padding: 12px; border-bottom: 1px solid #f1f1f1; text-align: center; }
+        
+        .grade-box { display: inline-block; padding: 4px 8px; border: 1px solid #ced4da; border-radius: 4px; background: #fff; min-width: 30px; font-weight: bold; }
+        .final-box { padding: 6px 12px; border-radius: 6px; font-weight: bold; color: white; display: inline-block; min-width: 40px; }
+        .pass { background: var(--success); }
+        .fail { background: var(--danger); }
+        .no-prac { color: #bdc3c7; font-weight: normal; }
+
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+
+/* تنسيق الحاوية للجدولين */
+.summary-container {
+    display: flex;
+    justify-content: center; /* لوضعهم في المنتصف */
+    gap: 30px; /* مسافة بين الجدولين */
+    margin-top: 30px;
+    flex-wrap: wrap; /* عشان يترتبوا تحت بعض بالموبايل */
+}
+
+/* صندوق الجدول */
+.summary-table-box {
+    flex: 1;
+    min-width: 300px;
+    max-width: 450px;
+    background: white;
+    border-radius: 12px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+    overflow: hidden;
+    border: 1px solid #e0e6ed;
+}
+
+/* ترويسة الجدول */
+.summary-header {
+    background: var(--secondary);
+    color: white;
+    padding: 12px;
+    text-align: center;
+    font-weight: bold;
+    font-size: 1.1em;
+}
+
+/* الجدول البسيط */
+.minimal-table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.minimal-table td {
+    padding: 12px 15px;
+    border-bottom: 1px solid #f1f1f1;
+    font-size: 0.95em;
+    color: #444;
+}
+
+/* عمود الأرقام */
+.minimal-table td:last-child {
+    text-align: left; /* الأرقام لليسار والعناوين لليمين */
+    color: var(--primary);
+    width: 40%;
+}
+
+/* تمييز الصفوف */
+.highlight-row {
+    background: #f0f7ff;
+    font-weight: bold;
+}
+.highlight-row td {
+    color: var(--accent) !important;
+    border-top: 2px solid #e0e0e0;
+}
+
+.status-pass {
+    color: var(--success) !important;
+}
+
+/* تحسين الخط العام */
+body {
+    font-family: 'Segoe UI', 'Tajawal', Tahoma, sans-serif; /* إضافة خطوط عربية أنيقة */
+    line-height: 1.6;
+}
+
+    </style>
+</head>
+<body>
+{% macro render_subject(name, extra_col, prac, theory, final) %}
+    <tr>
+        <td style="text-align: right;">
+            <div style="display: flex; justify-content: space-between; align-items: center; min-width: 180px;">
+                <span style="font-weight: bold; color: var(--primary);">{{ name }}</span>
+                {% if extra_col and extra_col != "-" %}
+                    <span class="grade-box" style="margin-right: 10px; border-color: var(--accent); min-width: 45px; text-align: center;">
+                        {{ extra_col }}
+                    </span>
+                {% else %}
+                    <span style="min-width: 45px; margin-right: 10px;"></span>
+                {% endif %}
+            </div>
+        </td>
+        <td>{% if prac and prac != "-" %}<span class="grade-box">{{ prac }}</span>{% else %}<span class="no-prac">-</span>{% endif %}</td>
+        <td>{% if theory and theory != "-" %}<span class="grade-box">{{ theory }}</span>{% else %}<span class="no-prac">-</span>{% endif %}</td>
+        <td>
+            {% set f_val = final|float(0) %}
+            <span class="final-box {{ 'fail' if f_val < 60 and f_val > 0 else 'pass' if f_val >= 60 else '' }}">
+                {{ final }}
+            </span>
+        </td>
+    </tr>
+{% endmacro %}
+<div class="container">
+    <div class="header-card">
+        <div class="header-item"><b>الاسم</b><span>{{ s[5] }}</span></div>
+        <div class="header-item"><b>الرقم الجامعي</b><span>{{ s[0] }}</span></div>
+                <div class="header-item"><b>رقم التحضيرية</b><span>{{ s[4] }}</span></div>
+        <div class="header-item"><b>الامتحاني 2</b><span>{{ s[3] }}</span></div>
+        <div class="header-item"><b>الامتحاني 3</b><span>{{ s[1] }}</span></div>
+    </div>
+
+    <div class="top-rates">
+        <div class="rate-badge">معدل الفرز: <b>{{ s[134] }}</b></div>
+        <div class="rate-badge">معدل التحضيرية الجامعي: <b>{{ s[53] }}</b></div>
+        <div class="rate-badge">معدل السنة 2: <b>{{ s[139] }}</b></div>
+               <div class="rate-badge">المعدل الحالي: <b>{{ s[138] }}</b></div>
+    </div>
+
+    <div class="tabs">
+        <div class="tab-btn active" onclick="openTab(event, 'y1')">التحضيرية</div>
+        <div class="tab-btn" onclick="openTab(event, 'y2')">السنة الثانية</div>
+        <div class="tab-btn" onclick="openTab(event, 'y3')">السنة الثالثة</div>
+    </div>
+
+    <div id="y1" class="tab-content active">
+        <div class="section-box">
+            <div class="section-header">الفصل الأول <span>معدل الفصل: {{ s[30] }}</span></div>
+            <table>
+                <tr><th style="text-align:right;">المادة (علامة المادة)</th><th>العملي</th><th>النظري</th><th>النهائية</th></tr>
+                {{ render_subject("Biology", s[10], s[13], s[12], s[15]) }}
+                {{ render_subject("Physics", s[17], s[20], s[19], s[22]) }}
+                {{ render_subject("Chemistry", s[23], s[26], s[25], s[28]) }}
+                {{ render_subject("English 1", s[9], "-", s[9], s[9]) }}
+                {{ render_subject("History",s[16], "-", s[16], s[16]) }}
+</table>
+        </div>
+        <div class="section-box">
+            <div class="section-header">الفصل الثاني <span>معدل الفصل: {{ s[47] }}</span></div>
+            <table>
+                <tr><th style="text-align:right;">المادة (علامة المادة)</th><th>العملي</th><th>النظري</th><th>النهائية</th></tr>
+                {{ render_subject("Anatomy", s[34], s[37], s[36], s[39]) }}
+                {{ render_subject("Physiology", s[40], s[43], s[42], s[45]) }}
+                {{ render_subject("English 2", s[32], "-", s[32], s[32]) }}
+                {{ render_subject("Genetics", s[33], "-", s[33], s[33]) }}
+                {{ render_subject("medical statistics", s[31], "-", s[31], s[31]) }}
+
+
+            </table>
+        </div>
+<div class="summary-container">
+    
+    <div class="summary-table-box">
+        <div class="summary-header">نتائج السنة التحضيرية</div>
+        <table class="minimal-table">
+            <tr><td>مجموع الفصل الأول</td><td><b>{{ s[29] }}</b></td></tr>
+            <tr><td>معدل الفصل الأول</td><td><b>{{ s[30] }}</b></td></tr>
+            <tr><td>مجموع الفصل الثاني</td><td><b>{{ s[46] }}</b></td></tr>
+            <tr><td>معدل الفصل الثاني</td><td><b>{{ s[47] }}</b></td></tr>
+            <tr><td>معدل التحضيرية</td><td><b>{{ s[49] }}</b></td></tr>
+                        <tr class="highlight-row"><td>معدل التحضيرية الجامعي</td><td><b>{{ s[53] }}</b></td></tr>
+                        <tr class="highlight-row"><td>معدل الفرز </td><td><b>{{ s[134] }}</b></td></tr>
+                      
+        </table>
+    </div>
+
+    <div class="summary-table-box">
+        <div class="summary-header">بيانات الفرز والقبول</div>
+        <table class="minimal-table">
+            <tr><td>ترتيب الفرز</td><td><b>{{ s[57] }}</b></td></tr>
+            <tr><td>ترتيب الجامعي للتحضيرية</td><td><b>{{ s[58] }}</b></td></tr>
+            <tr><td>درجة البكالوريا</td><td><b>{{ s[54] }}</b></td></tr>
+            <tr><td>ترتيب البكالوريا</td><td><b>{{ s[59] }}</b></td></tr>
+             <tr><td>نتيجة الفرز</td><td class="status-pass"><b>{{ s[60] }}</b></td></tr>
+            <tr><td>محافظة الفرز</td><td><b>{{ s[61] }}</b></td></tr>
+            <tr><td>نوع القبول</td><td><b>{{ s[62] }}</b></td></tr>
+        </table>
+    </div>
+    </div>
+</div>
+    <div id="y2" class="tab-content">
+        <div class="section-box">
+            <div class="section-header">الفصل الأول <span>معدل الفصل الأول: {{ s[135] }}</span></div>
+            <table>
+                <tr><th style="text-align:right;">المادة</th><th>العملي</th><th>النظري</th><th>النهائية</th></tr>
+                {{ render_subject("النسج 1", "-", s[63], s[64], s[65]) }}
+                {{ render_subject("الكيمياء الحيوية", "-", s[66], s[67], s[68]) }}
+                {{ render_subject("التشريح 1", "-", s[69], s[70], s[71]) }}
+                {{ render_subject("اللغة 3", "-", "-", s[72], s[72]) }}
+                {{ render_subject("علم النفس السلوكي", "-", "-", s[74], s[74]) }}
+                {{ render_subject("الثقافة ", "-", "-", s[75], s[75]) }}
+                {{ render_subject("اللغة العربية", "-", "-", s[73], s[73]) }}
+</table>
+        </div>
+<div class="section-box">
+            <div class="section-header">الفصل الثاني <span>معدل الفصل الثاني: {{ s[136] }}</span></div>
+            <table>
+                <tr><th style="text-align:right;">المادة</th><th>العملي</th><th>النظري</th><th>النهائية</th></tr>
+                {{ render_subject("تشريح2", "-", s[79], s[80], s[81]) }}
+                {{ render_subject("الكيمياء السريرية1", "-" , s[76], s[77], s[78]) }}
+                {{ render_subject(" الفيزيولوجيا الطبية 1", "-", s[82], s[83], s[84]) }}
+                {{ render_subject("النسج 2", "-", s[87],  s[88], s[89]) }}
+                {{ render_subject("مهارات التواصل  ", "-", "-", s[85], s[85]) }}
+                {{ render_subject("English 4 ", "-", "-", s[86], s[86]) }}
+                {{ render_subject("الجنين الطبي ", "-", s[90] , s[91], s[92]) }}
+                                </table>
+                          </div>
+<div class="summary-container" style="justify-content: center;">
+    <div class="summary-table-box" style="max-width: 600px; flex: none; width: 100%;">
+        <div class="summary-header"> نتائج السنة الثانية</div>
+        <table class="minimal-table">
+            <tr style="background: #fcfcfc;"><td colspan="2" style="text-align: center; font-size: 0.8em; color: #999; padding: 5px;">المجاميع الدراسية</td></tr>
+            <tr><td>مجموع الفصل الأول</td><td><b>{{ s[93] }}</b></td></tr>
+            <tr><td>مجموع الفصل الثاني</td><td><b>{{ s[94] }}</b></td></tr>
+
+            <tr style="background: #fcfcfc;"><td colspan="2" style="text-align: center; font-size: 0.8em; color: #999; padding: 5px;">المعدلات والنتائج</td></tr>
+            <tr><td>معدل الفصل الأول</td><td><b>{{ s[135] }}</b></td></tr>
+            <tr><td>معدل الفصل الثاني</td><td><b>{{ s[136] }}</b></td></tr>
+            <tr class="highlight-row"><td>معدل السنة الثانية</td><td><b>{{ s[139] }}</b></td></tr>
+
+            <tr style="background: #fcfcfc;"><td colspan="2" style="text-align: center; font-size: 0.8em; color: #999; padding: 5px;">تراتيب الدفعة</td></tr>
+            <tr><td>الترتيب (ف1 / ف2)</td><td><b>{{ s[97] }} / {{ s[98] }}</b></td></tr>
+            <tr class="highlight-row" style="background: #fff8e1;"><td>ترتيب السنة الثانية </td><td style="color: var(--warning) !important;"><b>{{ s[100] }}</b></td></tr>
+        </table>
+    </div>
+</div>
+ </div>
+
+
+<div id="y3" class="tab-content">
+        <div class="section-box" style="border-right: 5px solid #8e44ad; background: #fdfaff;">
+            <div class="section-header" style="color: #8e44ad;">
+                المعدلات والنتائج - السنة الثالثة 
+                <span>مجموع الفصل: {{ s[129] }} | معدل الفصل: {{ s[137] }}</span>
+            </div>
+        </div>
+<div class="section-box">
+            <div class="section-header">مواد الفصل الأول</div>
+            <table>
+                <tr>
+                    <th style="text-align:right;">المادة</th>
+                    <th>العملي</th>
+                    <th>النظري</th>
+                    <th>النهائية</th>
+                </tr>
+                {{ render_subject("أخلاقيات المهنة", "-", "-", s[105], s[105]) }}
+                
+                {{ render_subject("تشريح 3", "-", s[107], s[108], s[109]) }}
+                
+                {{ render_subject("فيزيولوجيا 2", "-", s[111], s[112], s[113]) }}
+                
+                {{ render_subject("كيمياء سريرية 2", "-", s[115], s[116], s[117]) }}
+                
+                {{ render_subject("مهارات سريرية", "-", s[119], s[120], s[121]) }}
+                
+                {{ render_subject("أحياء دقيقة 1", "-", s[123], s[124], s[125]) }}
+                
+                {{ render_subject("وبائيات ومنهجية", "-", s[126], s[127], s[128]) }}
+            </table>
+        </div>
+<div class="summary-container" style="justify-content: center;">
+    <div class="summary-table-box" style="max-width: 600px; flex: none; width: 100%;">
+        <div class="summary-header"> نتائج السنة الثالثة</div>
+        <table class="minimal-table">
+            <tr style="background: #fcfcfc;"><td colspan="2" style="text-align: center; font-size: 0.8em; color: #999; padding: 5px;">المجاميع الدراسية</td></tr>
+            <tr><td>مجموع الفصل الأول</td><td><b>{{ s[129] }}</b></td></tr>
+                       <tr style="background: #fcfcfc;"><td colspan="2" style="text-align: center; font-size: 0.8em; color: #999; padding: 5px;">المعدلات والنتائج</td></tr>
+            <tr><td>معدل الفصل الأول</td><td><b>{{ s[137] }}</b></td></tr>
+            <tr style="background: #fcfcfc;"><td colspan="2" style="text-align: center; font-size: 0.8em; color: #999; padding: 5px;">تراتيب الدفعة</td></tr>
+            <tr><td>ترتيب ف1</td><td><b>{{ s[131] }}</b></td></tr>
+
+        </table>
+    </div>
+</div>
+
+    </div>
+
+    <center><a href="/" style="text-decoration:none; color:var(--accent); font-weight:bold;">← بحث عن طالب آخر</a></center>
+</div>
+
+<script>
+    function openTab(evt, name) {
+        var i, content, btns;
+        content = document.getElementsByClassName("tab-content");
+        for (i = 0; i < content.length; i++) content[i].style.display = "none";
+        btns = document.getElementsByClassName("tab-btn");
+        for (i = 0; i < btns.length; i++) btns[i].className = btns[i].className.replace(" active", "");
+        document.getElementById(name).style.display = "block";
+        evt.currentTarget.className += " active";
+    }
+</script>
+</body>
+</html>
